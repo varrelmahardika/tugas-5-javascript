@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Produk</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            width: 700px;
+            margin: auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        #hasil {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Manajemen Produk Toko</h1>
+
+        <h3>Tambah Produk</h3>
+
+        <input type="text" id="nama" placeholder="Nama Produk">
+
+        <input type="number" id="harga" placeholder="Harga">
+
+        <button id="btnTambah">Tambah Produk</button>
+
+        <hr>
+
+        <h3>Daftar Produk</h3>
+
+        <button id="btnTampil">Tampilkan Semua Produk</button>
+
+        <input type="number" id="idHapus" placeholder="Masukkan ID produk">
+        <button id="btnHapus">Hapus Produk</button>
+
+        <div id="hasil"></div>
+
+    </div>
+
+
+    <script>
+
+        // Data produk awal minimal 5
+        let produkList = [
+            { id: 1, nama: "Laptop", harga: 12000000 },
+            { id: 2, nama: "Smartphone", harga: 5000000 },
+            { id: 3, nama: "Mouse", harga: 200000 },
+            { id: 4, nama: "Keyboard", harga: 350000 },
+            { id: 5, nama: "Headset", harga: 450000 }
+        ];
+
+
+        // Event Listener
+        const btnTambah = document.getElementById("btnTambah");
+        const btnTampil = document.getElementById("btnTampil");
+        const btnHapus = document.getElementById("btnHapus");
+
+
+        // Menambahkan produk menggunakan Spread Operator
+        function tambahProduk(nama, harga) {
+
+            const idBaru = produkList.length + 1;
+
+            const produkBaru = {
+                id: idBaru,
+                nama: nama,
+                harga: harga
+            };
+
+            produkList = [...produkList, produkBaru];
+
+            alert("Produk berhasil ditambahkan!");
+
+            tampilkanProduk();
+        }
+
+
+        // Menghapus produk menggunakan Rest Parameter
+        function hapusProduk(...idProduk) {
+
+            produkList = produkList.filter(function(produk) {
+                return !idProduk.includes(produk.id);
+            });
+
+            alert("Produk berhasil dihapus!");
+
+            tampilkanProduk();
+        }
+
+
+        // Menampilkan produk menggunakan Destructuring
+        function tampilkanProduk() {
+
+            const hasil = document.getElementById("hasil");
+
+            hasil.innerHTML = "";
+
+            produkList.forEach(function(produk) {
+
+                const { id, nama, harga } = produk;
+
+                hasil.innerHTML += `
+                    <p>
+                        <b>ID:</b> ${id} |
+                        <b>Nama:</b> ${nama} |
+                        <b>Harga:</b> Rp ${harga.toLocaleString("id-ID")}
+                    </p>
+                `;
+            });
+        }
+
+
+        // Event Listener tombol tambah
+        btnTambah.addEventListener("click", function() {
+
+            const nama = document.getElementById("nama").value;
+            const harga = Number(document.getElementById("harga").value);
+
+            if (nama === "" || harga === 0) {
+                alert("Nama dan harga harus diisi!");
+                return;
+            }
+
+            tambahProduk(nama, harga);
+
+            document.getElementById("nama").value = "";
+            document.getElementById("harga").value = "";
+        });
+
+
+        // Event Listener tombol tampil
+        btnTampil.addEventListener("click", function() {
+
+            tampilkanProduk();
+
+        });
+
+
+        // Event Listener tombol hapus
+        btnHapus.addEventListener("click", function() {
+
+            const id = Number(document.getElementById("idHapus").value);
+
+            if (id === 0) {
+                alert("Masukkan ID produk yang ingin dihapus!");
+                return;
+            }
+
+            hapusProduk(id);
+
+            document.getElementById("idHapus").value = "";
+
+});
+
+
+
+    </script>
+
+</body>
+</html>
